@@ -28,25 +28,21 @@ RUN apk update && apk add --no-cache \
     postgresql-client \
     && rm -rf /var/cache/apk/*
 
-# 安装 PHP 核心扩展
-RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
-    && docker-php-ext-install \
-    zip \
-    xml \
-    json \
-    mbstring \
-    pdo \
-    pdo_mysql \
-    pdo_pgsql \
-    mysqli \
-    gd \
-    opcache \
-    bcmath \
-    bz2 \
-    intl \
-    pcntl \
-    soap \
-    sockets
+# 安装系统依赖
+RUN apk update && apk add --no-cache \
+    freetype-dev \
+    libjpeg-turbo-dev \
+    libpng-dev \
+    libxml2-dev \
+    libzip-dev \
+    postgresql-dev \
+    bzip2-dev \
+    gettext-dev \
+    icu-dev \
+    libxslt-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install gd \
+    && docker-php-ext-install zip xml json mbstring pdo pdo_mysql pdo_pgsql mysqli opcache bcmath bz2 intl pcntl soap sockets
 
 # 安装 Redis 扩展（需要从源码编译）
 RUN apk add --no-cache --virtual .build-deps \
