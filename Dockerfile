@@ -1,5 +1,5 @@
 # Dockerfile
-FROM php:7.0.4-fpm-alpine
+FROM php:7.0.4-fpm
 
 # 安装 Nginx 和必要的工具
 RUN apk update && apk add --no-cache \
