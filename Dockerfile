@@ -10,10 +10,6 @@ RUN apk update && apk add --no-cache \
     vim \
     && rm -rf /var/cache/apk/*
 
-# 设置时区
-RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
-    && echo "Asia/Shanghai" > /etc/timezone
-
 # 创建测试页面
 RUN mkdir -p /var/www/html
 RUN echo "<!DOCTYPE html><html><head><title>Welcome</title></head><body><h1>Node.js $(node -v) with Nginx</h1><p>Yarn $(yarn --version)</p></body></html>" > /var/www/html/index.html
