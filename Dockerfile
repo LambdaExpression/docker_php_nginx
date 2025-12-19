@@ -8,7 +8,12 @@ RUN apk update && apk add --no-cache \
     curl \
     wget \
     vim \
+    tzdata \
     && rm -rf /var/cache/apk/*
+
+# 设置时区
+RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
+    && echo "Asia/Shanghai" > /etc/timezone
 
 # 创建测试页面
 RUN mkdir -p /var/www/html
