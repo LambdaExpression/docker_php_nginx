@@ -1,5 +1,5 @@
 # Dockerfile
-FROM php:7.0.4-fpm-alpine
+FROM php:7.0.33-fpm-alpine3.7
 
 # 安装 Nginx 和必要的工具
 RUN apk update && apk add --no-cache \
@@ -9,6 +9,7 @@ RUN apk update && apk add --no-cache \
     wget \
     vim \
     tzdata \
+    php-redis \
     && rm -rf /var/cache/apk/*
 
 # 设置时区
