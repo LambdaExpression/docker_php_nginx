@@ -1,4 +1,4 @@
-# Dockerfile - PHP 7.0 + Nginx 基础镜像（无 mcrypt）
+# Dockerfile - PHP 5.6.30 + Nginx 基础镜像
 FROM php:5.6.30-fpm-alpine
 
 # 1. 更新包管理器
@@ -8,7 +8,7 @@ RUN apk update
 RUN apk add --no-cache nginx
 
 # 3. 安装所有 PHP 扩展依赖
-RUN apk add --no-cache libzip-dev libxml2-dev libpng-dev libjpeg-turbo-dev
+RUN apk add --no-cache libxml2-dev libpng-dev libjpeg-turbo-dev
 RUN apk add --no-cache freetype-dev icu-dev openssl-dev
 RUN apk add --no-cache bzip2-dev
 
@@ -27,11 +27,12 @@ RUN docker-php-ext-install gd
 
 # 7. 安装 Redis 扩展
 RUN apk add --no-cache autoconf g++ make
-RUN pecl install redis-3.1.6
+# PHP 5.6 兼容的 Redis 扩展版本
+RUN pecl install redis-2.2.8
 RUN docker-php-ext-enable redis
 RUN apk del autoconf g++ make
 
-# 8. 启用 Opcache
+# 8. 启用 Opcache（PHP 5.6 中已经内置）
 RUN docker-php-ext-enable opcache
 
 # 9. 配置时区
@@ -45,7 +46,7 @@ RUN echo "upload_max_filesize = 50M" > /usr/local/etc/php/conf.d/uploads.ini
 RUN echo "post_max_size = 50M" >> /usr/local/etc/php/conf.d/uploads.ini
 RUN echo "max_execution_time = 300" > /usr/local/etc/php/conf.d/execution.ini
 
-# 11. 配置 Opcache
+# 11. 配置 Opcache（PHP 5.6 配置）
 RUN echo "[opcache]" > /usr/local/etc/php/conf.d/opcache.ini
 RUN echo "opcache.enable=1" >> /usr/local/etc/php/conf.d/opcache.ini
 RUN echo "opcache.enable_cli=1" >> /usr/local/etc/php/conf.d/opcache.ini
@@ -69,4 +70,4 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
     CMD curl -f http://localhost/test.php > /dev/null 2>&1 || exit 1
 
 # 17. 默认命令
-CMD ["echo", "Yii2 PHP 7.0 + Nginx base image ready"]
+CMD ["echo", "PHP 5.6.30 + Nginx base image ready"]
