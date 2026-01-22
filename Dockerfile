@@ -1,5 +1,5 @@
 # Dockerfile - PHP 7.0 + Nginx 基础镜像（无 mcrypt）
-FROM php:5.6.19-fpm-alpine
+FROM php:5.6.30-fpm-alpine
 
 # 1. 更新包管理器
 RUN apk update
